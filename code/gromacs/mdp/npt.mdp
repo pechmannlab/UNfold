@@ -1,0 +1,27 @@
+constraints         = h-bonds 
+integrator          = md
+dt                  = 0.001
+nsteps              = 1000000
+nstxout             = 5000
+nstxout-compressed  = 1000
+nstlog              = 1000
+nstenergy           = 1000
+nstlist             = 20
+
+coulombtype         = PME
+rvdw                = 1.0
+rlist               = 1.0
+rcoulomb            = 1.0
+
+Tcoupl              = berendsen 
+tc-grps             = System
+tau_t               = 0.5
+ref_t               = 300
+
+pcoupl              = berendsen 
+pcoupltype          = isotropic
+tau-p               = 0.5 
+ref-p               = 1
+compressibility     = 4.5e-5
+
+gen_vel             = no

@@ -1,0 +1,27 @@
+# Notes (4/2024) 
+# Contact: sebastian@pechmannlab.net
+
+1. family_sbm.py: 
+- generates structure-based models and runs simulations
+- determines breakpoints along unfolding trajectories
+- classifies breakpoints
+- computes unfolding curves
+- computes various properties of trajectories
+  Requirements: 
+  - local install of SMOG2 [www.smog-server.org/smog2]
+  - local install of Pywham2.1 
+  - Python packages: openMM, sbmOpenMM, mdtraj
+
+2. gromacs/gromacs.py:
+- generates all-atom explicit solvent MD simulations
+- input files and settings under gromacs/mdp/
+- ideally on HPC infrastructure, else with patience
+- requires local install of GROMACS
+
+2. dynamics.py:  
+- analyses frustration and gromacs data
+- computes network of correlated motions
+
+3. cellular.py:  
+- predicts degrons with algorithm by [Johansson et al JMB 2023] 
+- tests Random Forst regression and classification models

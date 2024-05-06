@@ -1,0 +1,28 @@
+constraints         = none
+integrator          = md
+dt                  = 0.001
+nsteps              = 10000000
+nstxout             = 50000
+nstxout-compressed  = 1000
+nstlog              = 5000
+nstenergy           = 1000
+nstlist             = 20
+ns_type             = grid
+
+coulombtype         = PME
+rvdw                = 1.0
+rlist               = 1.0
+rcoulomb            = 1.0
+
+Tcoupl              = v-rescale 
+tc-grps             = System
+tau_t               = 1.0
+ref_t               = 300
+
+pcoupl              = parrinello-rahman
+pcoupltype          = isotropic
+tau-p               = 2 
+ref-p               = 1
+compressibility     = 4.5e-5
+
+gen_vel             = yes 

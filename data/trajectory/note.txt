@@ -1,0 +1,2 @@
+Trajectory data can be generated with the provided computer code. 
+Original trajectory data is available upon request (file sizes are too large for github). 
