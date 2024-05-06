@@ -1,5 +1,4 @@
 # Notes (4/2024) 
-# Contact: sebastian@pechmannlab.net
 
 1. family_sbm.py: 
 - generates structure-based models and runs simulations
