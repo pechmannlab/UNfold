@@ -53,9 +53,9 @@ p1 <- ggplot(data_qf, aes(x=position)) +
   geom_line(aes(y=agg1_mean), color="orange", size=0.8, alpha=0.5) +
   labs(x="Simulation time", y="Qf") + 
   scale_y_continuous(sec.axis = sec_axis( ~ . * mmax, name="Aggregation score")) +
-  theme_classic()
+  theme_classic() + 
   theme(
-     text = element_text(size=32)
+     text = element_text(size=16)
   )
 
   
@@ -65,10 +65,11 @@ p2 <- ggplot(data_qf, aes(x=position)) +
     geom_line(aes(y=agg2_mean), color="red", size=0.8, alpha=0.5) +
     labs(x="Simulation time", y="Qf") + 
     scale_y_continuous(sec.axis = sec_axis( ~ . * mmax, name="Aggregation score")) +
-    theme_classic()
-  theme(
-    text = element_text(size=32)
+    theme_classic() + 
+    theme(
+    text = element_text(size=16)
   )
+  
   
 
   
@@ -89,13 +90,16 @@ surf <- as.data.frame(read.table("data/processed/surfaceAP_trajectory.txt", head
 qf <- as.data.frame(read.table("data/processed/qf_trajectory.txt", header=T))
 rg <- as.data.frame(read.table("data/processed/rg_trajectory.txt", header=T))
 
+genes <- read.table("data/processed/gene_names.txt", header=T)
 
 
 traj_names <- names(surf)
 orf_names <- substr(traj_names, 1, 7)
+gene_names <- rep(NA, length(orf_names))
+for (i in 1:length(gene_names)){gene_names[i] <- as.character(genes$name[genes$orf==orf_names[i]])}
+
 result_folded <- data.frame(orf=c(), ap=c())
 result_unfolded <- data.frame(orf=c(), ap=c())
-
 for (i in 1:length(traj_names)){                   #
     current_qf<- qf[,i]
     sel_folded <- current_qf > 0.7
@@ -108,21 +112,24 @@ for (i in 1:length(traj_names)){                   #
     data_unfolded <- current_data[sel_unfolded]   
     #data_unfolded <- sample(data_unfolded, floor(length(data_unfolded)/10) )
     
-    current_df_folded <- data.frame(orf=rep(factor(orf_names[i]), length(data_folded)), ap=data_folded )
-    current_df_unfolded <- data.frame(orf=rep(factor(orf_names[i]), length(data_unfolded)), ap=data_unfolded )
+    current_df_folded <- data.frame(orf=rep(factor(gene_names[i]), length(data_folded)), ap=data_folded )
+    current_df_unfolded <- data.frame(orf=rep(factor(gene_names[i]), length(data_unfolded)), ap=data_unfolded )
     result_folded <- rbind(result_folded, current_df_folded)
     result_unfolded <- rbind(result_unfolded, current_df_unfolded)
   } 
 
 
 
-list_orf <- unique(orf_names)
+#list_orf <- unique(orf_names)
+list_orf <- unique(gene_names)
 sortdf <- data.frame(orf=c(), mean=c())
 for (i in 1:length(list_orf)){
   current_orf <- list_orf[i]
+ 
   current_data <- result_unfolded[result_unfolded$orf==current_orf,]
   current_mean <- mean(current_data$ap)
   current_df <- data.frame(orf=current_orf, mean=current_mean)
+  #current_df <- data.frame(orf=current_gn, mean=current_mean)
   sortdf <- rbind(sortdf, current_df)
 }
 sortdf <- sortdf[sort(sortdf$mean, index.return=T, decreasing=T)$ix, ]
@@ -165,6 +172,7 @@ p.unfolded <- ggplot(result_unfolded, aes(x=ap, y=orf, fill= ..x..) ) +
 
 
 
+
 svg(file = "figures/figure4/C_aggsurf.svg", height=4, width=4)
 
 plot_grid(p.folded, p.unfolded, labels ="", ncol = 1, align = 'v')
@@ -178,43 +186,48 @@ dev.off()
 imdf <- as.data.frame(read.table("data/processed/unfolding_intermediates.txt", header=T))
 imdf$pdb <- substr(imdf$traj,1, 7)
 
-pdblist <- unique(imdf$pdb)
+genes <- read.table("data/processed/gene_names.txt", header=T)
+gn <- rep(NA, length(imdf$pdb))
+for (i in 1:length(gn)){gn[i] <- as.character(genes$name[genes$orf==orf_names[i]])}
+imdf$name <- gn
+
+pdblist <- unique(imdf$name)
 m <- rep(NA, length(pdblist))
 for (i in 1:length(pdblist)){
   current_pdb <- as.vector(pdblist)[i]
-  current_dat <- imdf[imdf$pdb==current_pdb,]
+  current_dat <- imdf[imdf$name==current_pdb,]
   current_mean <- mean(current_dat$mindist)
   m[i] <- current_mean
 }
 order_pdb <- pdblist[sort(m, index.return=T)$ix]
-imdf$pdb <- factor(imdf$pdb, levels=rev(order_pdb))
+imdf$name <- factor(imdf$name, levels=rev(order_pdb))
 
 
-svg(file = "figures/figure4/D_unfoldint.svg", height=4, width=6)
+svg(file = "figures/figure4/D_unfoldint.svg", height=4, width=5.5)
 
-p1 <- ggplot(imdf, aes(x=end-start, y=pdb) ) +         
-  geom_boxplot(aes(fill=pdb)) +
+p1 <- ggplot(imdf, aes(x=end-start, y=name) ) +         
+  geom_boxplot(aes(fill=name)) +
   #scale_fill_viridis_d(option="C", begin=0.3, end=1) + 
   scale_fill_viridis_d(option="D", begin=0.4, end=0.95, direction=-1) + 
-  scale_x_continuous(limits=c(0, 500)) + 
-  labs(x="Unfolding time", y="") +
+  scale_x_continuous(limits=c(0, 500), breaks=c(0, 250, 500)) + 
+  labs(x="Unfolding [sim.time]", y="") +
   theme_classic() + 
   theme(
-    text = element_text(size=16),
+    text = element_text(size=14),
     axis.line.y = element_blank(), 
     axis.ticks.y = element_blank(), 
     axis.text.y = element_text(size=12),
     legend.position = 'none'
   )
 
-p2 <- ggplot(imdf, aes(x=mindist, y=pdb) ) +         
-  geom_boxplot(aes(fill=pdb)) +
+p2 <- ggplot(imdf, aes(x=mindist, y=name) ) +         
+  geom_boxplot(aes(fill=name)) +
   scale_fill_viridis_d(option="D", begin=0.4, end=0.95, direction=-1) + 
-  scale_x_continuous(limits=c(0, 500)) + 
-  labs(x="Unfolding intermediate", y="") +
+  scale_x_continuous(limits=c(0, 500), breaks=c(0, 250, 500)) + 
+  labs(x="Intermediate [sim.time]", y="") +
   theme_classic() + 
   theme(
-    text = element_text(size=16),
+    text = element_text(size=14),
     axis.line.y = element_blank(), 
     axis.ticks.y = element_blank(), 
     axis.text.y = element_text(size=12),
@@ -225,6 +238,7 @@ p2 <- ggplot(imdf, aes(x=mindist, y=pdb) ) +
 plot_grid(p1, p2, labels ="", ncol = 2, align = 'h')
 
 dev.off()
+
 
 
 
@@ -281,7 +295,7 @@ ggplot(rfdf, aes(x=pos, y=rfpct)) +
   labs(x="", y="% refolding") + 
   theme_classic() + 
   theme(
-    text = element_text(size=18), 
+    text = element_text(size=20), 
     axis.text.x = element_text(angle=90, hjust=1, vjust=0.5), 
     axis.line.x = element_blank(), 
     axis.ticks.x = element_blank()
@@ -405,11 +419,11 @@ rgdf <- data.frame(pdb=names, rg=rgm, initS=initS, C=C_data, N=N_data, ter=termi
 
 svg(file = "figures/figure4/F_correlations.svg", height=2, width=4)
 
-p1 <- ggplot(rgdf, aes(x=ter, y=rg)) + 
+p1 <- ggplot(rgdf, aes(x=rg, y=ter)) + 
   geom_point( size=2 ) + 
   geom_smooth(method=lm, alpha=0.1, size=1, color="#222222", fill="green", se=T) + 
-  scale_y_continuous(limits=c(1.6, 2.5)) + 
-  labs(x="Length termini", y="Radius of gyration") + 
+  scale_x_continuous(limits=c(1.6, 2.5)) + 
+  labs(y="Length termini", x="Radius of gyration") + 
   #geom_text(aes(label=pdb)) + 
   theme_classic() + 
   theme(
@@ -437,19 +451,21 @@ dev.off()
 
 
 
+# cor(rgdf$rg, rgdf$ter)
+# 0.8329932
+# fit <- lm(rgdf$ter ~ rgdf$rg)
+# fit
+# Coefficients:
+#  (Intercept)      rgdf$rg  
+# -43.47        39.82  
 
 
+# cor(rgdf$a5, rgdf$ter)
+# -0.5727268
+# fit <- lm(rgdf$ter ~ rgdf$a5)
+# fit
+# Coefficients:
+#  (Intercept)      rgdf$a5  
+# 52.79       -27.28  
 
-
-p2 <- ggplot(rgdf, aes(x=a5, y=rg)) + 
-  geom_point( size=2) + 
-  geom_smooth(method=lm, alpha=0.1, size=1, color="#222222", fill="purple", se=T) + 
-  scale_x_continuous(breaks=c(0.25, 0.5, 0.75, 1), labels=c(25, 50, 75, 100)) + 
-  scale_y_continuous(limits=c(1.6, 2.5)) + 
-  labs(x="% C-unfolding", y="Radius of gyration") +
-  #geom_text(aes(label=pdb)) + 
-  theme_classic() + 
-  theme(
-    text = element_text(size=12)
-  )
 

@@ -136,6 +136,7 @@ ggplot(frustss.m, aes(x=variable, y=value)) +
   geom_boxplot(aes(fill=type)) + 
   geom_jitter(size=0.5, alpha=0.6, width=0.2, color="#333333") + 
   labs(y="Average frustration", x="") + 
+  scale_x_discrete( labels=c(paste("\u03B2", "1", sep=""), paste("\u03B1", "1", sep=""), paste("\u03B2", "2", sep=""), paste("\u03B2", "3", sep=""), paste("\u03B1", "2", sep=""), paste("\u03B2", "4", sep=""), paste("\u03B1", "3", sep=""), paste("\u03B2", "5", sep=""), paste("\u03B1", "4", sep=""), paste("\u03B2", "6", sep=""), paste("\u03B1", "5", sep="") )) + 
   scale_fill_manual(values=c("#FF0000", "#b735b7")) +   
   theme_classic() + 
   coord_flip() + 
@@ -151,7 +152,7 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL C ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL S2.A ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 svg("figures/figure2/D_frustration_aln.svg", height=4, width=2.4)
 
@@ -182,9 +183,10 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL C ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #pymol structure
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL C ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 rmsf <- as.data.frame(read.table("data/processed/rmsf_msaprofile.txt", header=T))
 rmsf$ymin <- ifelse(rmsf$mean - rmsf$sd > 0, rmsf$mean - rmsf$sd, 0)
@@ -197,7 +199,7 @@ sspoly_rmsf$y <- ifelse(sspoly_rmsf$y==1, 6, 0)
 svg(file = "figures/figure2/F_rmsf_aln.svg", height = 3, width = 6)
 
 ggplot(rmsf, aes(x=pos, y=mean, ymin=ymin, ymax=ymax)) + 
-  scale_y_continuous(limits=c(0, 6.4)) + 
+  scale_y_continuous(limits=c(0, 6.4), breaks=c(0, 2, 4, 6), labels=c("0.00", "2.00", "4.00", "6.00")) + 
   geom_polygon(data=sspoly_rmsf, inherit.aes=F, aes(x=x, y=y, fill=id), show.legend= FALSE, alpha=0.1) + 
   scale_fill_manual(values=colo) +
   geom_line() + 
@@ -212,7 +214,7 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL E ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 svg("figures/figure2/G_rmsf_ss.svg", height=4, width=4)
 
@@ -233,6 +235,7 @@ ggplot(rmsfss.m, aes(x=variable, y=value)) +
   geom_boxplot(aes(fill=type)) + 
   geom_jitter(size=0.5, alpha=0.6, width=0.2, color="#333333") + 
   labs(y="Average rmsf", x="") + 
+  scale_x_discrete( labels=c(paste("\u03B2", "1", sep=""), paste("\u03B1", "1", sep=""), paste("\u03B2", "2", sep=""), paste("\u03B2", "3", sep=""), paste("\u03B1", "2", sep=""), paste("\u03B2", "4", sep=""), paste("\u03B1", "3", sep=""), paste("\u03B2", "5", sep=""), paste("\u03B1", "4", sep=""), paste("\u03B2", "6", sep=""), paste("\u03B1", "5", sep="") )) + 
   scale_fill_manual(values=c("#FF0000", "#b735b7")) +   
   theme_classic() + 
   coord_flip() + 
@@ -248,7 +251,7 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL F ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL S2.B ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 svg("figures/figure2/H_rmsf_aln.svg", height=4, width=2.4)
 
@@ -278,7 +281,7 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL G ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL E ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 svg("figures/figure2/G_corrmotion.svg", height=4, width=4)
 
@@ -330,7 +333,7 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL H ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL F ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 frustp <- as.data.frame(read.table("data/processed/frustration_profiles.txt", header=T))
 rmsfp <- as.data.frame(read.table("data/processed/rmsf_profiles.txt", header=T))
@@ -377,3 +380,18 @@ ggplot(datap, aes(x=frust, y=rmsf)) +
 
 dev.off()
 
+
+#cor( colMeans(rmsfp[,sel_a]), colMeans(frustp[,sel_a]) )
+#fit <- lm(colMeans(rmsfp[,sel_a]) ~ colMeans(frustp[,sel_a])) 
+#fit
+#Coefficients:
+#  (Intercept)  colMeans(frustp[, sel_a])  
+#0.1855                     0.1288  
+
+
+#cor( colMeans(rmsfp[,sel_b]), colMeans(frustp[,sel_b]) )
+#fit <- lm(colMeans(rmsfp[,sel_b]) ~ colMeans(frustp[,sel_b]) )
+#fit
+#Coefficients:
+#  (Intercept)  colMeans(frustp[, sel_b])  
+#0.1236                     1.5221  

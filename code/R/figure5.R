@@ -20,31 +20,6 @@ svg(file = "figures/figure5/A_Cdegron.svg", height=6, width=4)
 degron <- as.data.frame(read.table("data/processed/degron_probs.txt", header=T))
 
 
-R_Nd70 <- round(cor(degron$Cunfold, degron$d70_N), 3)
-pN1 <- ggplot(degron, aes(x=Cunfold, y=d70_N)) + 
-  geom_smooth(method=lm, color="orange", fill="orange", se=F, alpha=0.3) + 
-  geom_point(size=2) + 
-  geom_text(x=0.8, y=6, label=paste("R =", R_Nd70, sep=' '), size=7, stat="unique") + 
-  scale_x_continuous(breaks=c(0.25, 0.5, 0.75, 1), labels=c(25, 50, 75, 100)) + 
-  scale_y_continuous(limits=c(-0.5, 6.5)) + 
-  labs(x="% C-unfolding", y="N-ter degron score") +
-  theme_classic() + 
-  theme(
-    text = element_text(size=20)
-  )
-
-R_Nmean <- round(cor(degron$Cunfold, degron$mean_N), 3)
-pN2 <- ggplot(degron, aes(x=Cunfold, y=mean_N)) + 
-  geom_smooth(method=lm, color="orange", fill="orange", se=F, alpha=0.3) + 
-  geom_point(size=2) + 
-  geom_text(x=0.8, y=0.6, label=paste("R =", R_Nmean, sep=' '), size=7, stat="unique") + 
-  scale_x_continuous(breaks=c(0.25, 0.5, 0.75, 1), labels=c(25, 50, 75, 100)) + 
-  labs(x="% C-unfolding", y="C-ter avrg. degron prob.") +
-  theme_classic() + 
-  theme(
-    text = element_text(size=20)
-  )
-
 R_Cd70 <- round(cor(degron$Cunfold, degron$d70_C), 3)
 pC1 <- ggplot(degron, aes(x=Cunfold, y=d70_C)) + 
   geom_smooth(method=lm, color="purple", fill="purple", se=F, alpha=0.3) + 
@@ -70,7 +45,6 @@ pC2 <- ggplot(degron, aes(x=Cunfold, y=mean_C)) +
     text = element_text(size=20)
   )
 
-#plot_grid(pN1, pC1, pN2, pC2, labels ="", ncol = 2, align = 'h')
 plot_grid(pC1,  pC2, labels ="", ncol = 1, align = 'v')
 
 
@@ -141,17 +115,17 @@ dev.off()
 
 
 
-boxplot(degron$d70_Np[degron$substr==1], degron$d70_Np[degron$substr==0])
-wilcox.test(degron$d70_Np[degron$substr==1], degron$d70_Np[degron$substr==0])
+#boxplot(degron$d70_Np[degron$substr==1], degron$d70_Np[degron$substr==0])
+#wilcox.test(degron$d70_Np[degron$substr==1], degron$d70_Np[degron$substr==0])
 
-boxplot(degron$N[degron$substr==1], degron$N[degron$substr==0])
-wilcox.test(degron$N[degron$substr==1], degron$N[degron$substr==0])
-
-
+#boxplot(degron$N[degron$substr==1], degron$N[degron$substr==0])
+#wilcox.test(degron$N[degron$substr==1], degron$N[degron$substr==0])
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL C ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL S5 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # !! always reload vars, as re-using variable names for different data !! 
 
@@ -234,7 +208,7 @@ dev.off()
 
 ### substr
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL S5 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 svg(file = "figures/figure5/D_substr.svg", height=3, width=6)

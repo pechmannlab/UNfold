@@ -86,9 +86,8 @@ dev.off()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL C ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-source('~/sw/R/ggsankey-main/R/utils-pipe.R')
-source('~/sw/R/ggsankey-main/R/sankey.R')
-#library(ggsankey)
+
+library(ggsankey)
 
 
 svg("figures/figure3/C_sankey.svg", height=4, width=7)
@@ -210,7 +209,7 @@ col_b <- colfunc_b(16)
 
 p.b1 <- ggplot(b1, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b1")+
+  labs(x="", y="", title=paste("\u03B2", "1", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -222,7 +221,7 @@ p.b1 <- ggplot(b1, aes(x=pos)) +
 
 p.a1 <- ggplot(a1, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="a1")+
+  labs(x="", y="", title=paste("\u03B1", "1", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_a) + 
@@ -234,7 +233,7 @@ p.a1 <- ggplot(a1, aes(x=pos)) +
 
 p.b2 <- ggplot(b2, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b2")+
+  labs(x="", y="", title=paste("\u03B2", "2", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -246,7 +245,7 @@ p.b2 <- ggplot(b2, aes(x=pos)) +
 
 p.b3 <- ggplot(b3, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b3")+
+  labs(x="", y="", title=paste("\u03B2", "3", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -258,7 +257,7 @@ p.b3 <- ggplot(b3, aes(x=pos)) +
 
 p.a2 <- ggplot(a2, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="a2")+
+  labs(x="", y="", title=paste("\u03B1", "2", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_a) + 
@@ -270,7 +269,7 @@ p.a2 <- ggplot(a2, aes(x=pos)) +
 
 p.b4 <- ggplot(b4, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b4")+
+  labs(x="", y="", title=paste("\u03B2", "4", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -283,7 +282,7 @@ p.b4 <- ggplot(b4, aes(x=pos)) +
 
 p.a3 <- ggplot(a3, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="a3")+
+  labs(x="", y="", title=paste("\u03B1", "3", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_a) + 
@@ -296,7 +295,7 @@ p.a3 <- ggplot(a3, aes(x=pos)) +
 
 p.b5 <- ggplot(b5, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b5")+
+  labs(x="", y="", title=paste("\u03B2", "5", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -309,7 +308,7 @@ p.b5 <- ggplot(b5, aes(x=pos)) +
 
 p.a4 <- ggplot(a4, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="a4") + 
+  labs(x="", y="", title=paste("\u03B1", "4", sep="")) + 
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_a) + 
@@ -320,7 +319,7 @@ p.a4 <- ggplot(a4, aes(x=pos)) +
 
 p.b6 <- ggplot(b6, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="b6") +
+  labs(x="", y="", title=paste("\u03B2", "6", sep="")) +
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_b) + 
@@ -332,7 +331,7 @@ p.b6 <- ggplot(b6, aes(x=pos)) +
 
 p.a5 <- ggplot(a5, aes(x=pos)) + 
   geom_line(aes(y=val, color=pdb), size=0.5, show.legend=F) + 
-  labs(x="", y="", title="a5")+
+  labs(x="", y="", title=paste("\u03B1", "5", sep=""))+
   scale_x_continuous(breaks=c(0, 50, 100), labels=c(0, 50, 100), limits=c(0, 102)) + 
   scale_y_continuous(breaks=c(0, 0.5, 1), labels=c(0, 50, 100)) + 
   scale_color_manual(values=col_a) + 
@@ -376,11 +375,10 @@ b5 <- auc[auc$ss=="b5",]
 b6 <- auc[auc$ss=="b6",]
 bdf <- rbind(b2, b3, b5, b6)
 bdf$start_ss <- factor(bdf$start_ss, levels=c("a1", "a2/b2", "a3", "a4/b5", "a5", "other"))
-
-
+bdf$ss2 <- c(rep(paste("\u03B2", "2", sep=""),6), rep(paste("\u03B2", "3", sep=""),6), rep(paste("\u03B2", "5", sep=""),6), rep(paste("\u03B2", "6", sep=""),6))
 
 p.b <- ggplot(bdf, aes(x=start_ss)) + 
-  geom_col(aes(y=auc, fill=ss), position=position_dodge2() ) + 
+  geom_col(aes(y=auc, fill=ss2), position=position_dodge2() ) + 
   geom_errorbar(aes(ymin=auc-auc_sd, ymax=auc+auc_sd), position=position_dodge2(width = 0.2, padding = 0.8), col="grey50", alpha=0.5) + 
   labs(y="Unfolding AUC", x="Initial unfolding") + 
   scale_y_continuous(limits=c(0, 100)) + 
@@ -396,18 +394,19 @@ p.b <- ggplot(bdf, aes(x=start_ss)) +
   )
 
 
-
 a1 <- auc[auc$ss=="a1",]
 a3 <- auc[auc$ss=="a3",]
 a4 <- auc[auc$ss=="a4",]
 a5 <- auc[auc$ss=="a5",]
 adf <- rbind(a1, a3, a4, a5)
 adf$start_ss <- factor(adf$start_ss, levels=c("a1", "a2/b2", "a3", "a4/b5", "a5", "other"))
+adf$ss2 <- c(rep(paste("\u03B1", "1", sep=""),6), rep(paste("\u03B1", "3", sep=""),6), rep(paste("\u03B1", "4", sep=""),6), rep(paste("\u03B1", "5", sep=""),6))
+
 adf$col <- factor(c(1:nrow(adf)))
-alpha_sel <- c(0.8,0.8,1,0.8,0.8,0.8,  0.8,0.8,0.8,1,0.8,0.8,  0.8,0.8,0.8,0.8,0.8,1,  0.8,0.8,0.8,0.8,1,0.8)
+adf$alph <- c(0.8,0.8,1  ,0.8,0.8,0.8,  0.8,0.8,0.8,0.8,0.8,1,   1,  0.8,0.8,0.8,0.8,0.8,  0.8,0.8,0.8,0.8,1,0.8)
 
 p.a <- ggplot(adf, aes(x=start_ss)) + 
-  geom_col(aes(y=auc, fill=ss, alpha=alpha_sel), position=position_dodge2() ) + 
+  geom_col(aes(y=auc, fill=ss2, alpha=alph), position=position_dodge2() ) + 
   geom_errorbar(aes(ymin=auc-auc_sd, ymax=auc+auc_sd), position=position_dodge2(width = 0.2, padding = 0.8), col="grey50", alpha=0.5) + 
   labs(y="Unfolding AUC", x="Initial unfolding") + 
   scale_y_continuous(limits=c(0, 100)) + 
@@ -432,6 +431,8 @@ dev.off()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL G ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+genes <- read.table("data/processed/gene_names.txt", header=T)
+
 bpinit <- as.data.frame(read.table("data/processed/assign_bpinit.txt", header=T))
 
 pdblist <- unique(bpinit$protein)
@@ -454,12 +455,20 @@ for (i in 1:nrow(df)){
 }
 df$class <- preclass
 
+
+# this file is generated by dynamics.py, cluster 46 is the cluster between a2/b2
 selclust <- as.data.frame(read.table("code/tmp.selclust", header=T))
-
-
-
 sel_46 <- selclust[selclust$cluster==46, ]
 c46 <- cbind(df, sel_46[,c(2,3,4)])
+
+c46$class[c46$class=="a2"] <- "a2/b2"   # correct lable
+gn <- rep(NA, nrow(c46))
+for (i in 1:nrow(c46)){
+  current_pdb <- c46$pdb[i]
+  current_gn <- genes$name[genes$orf==current_pdb]
+  gn[i] <- as.character(current_gn)
+}
+c46$name <- gn
 
 
 
@@ -469,9 +478,9 @@ ggplot(c46, aes(x=a2, y=mean)) +
   geom_smooth(method=lm, alpha=0.1, size=1, color="#222222", fill="orange", se=T) + 
   geom_point(aes(color=class, shape=class), size=3) + 
   geom_errorbar(aes(ymin=mean-std, ymax=mean+std),  col="grey50", alpha=0.5) +     # position=position_dodge2(width = 0.2, padding = 0.8),
-  geom_text(aes(label=pdb), nudge_x=0.055, nudge_y=0.07, size=4) + 
+  geom_text(aes(label=name), nudge_x=0.055, nudge_y=0.07, size=4) + 
   scale_x_continuous(breaks=c(0, 0.3, 0.6, 0.9), labels=c(0, 30, 60, 90), limits=c(0, 0.95)) +
-  labs(x="% class a2/b2", y="Mean distance") + 
+  labs(x="% class a2/b2", y=paste("Distance of ", "\u03B1", 2, "-", "\u03B2", 2, " contact cluster", sep="")) + 
   scale_color_manual(values=c("orange", "purple", "#777777")) + 
   theme_classic() + 
   theme(
@@ -480,6 +489,7 @@ ggplot(c46, aes(x=a2, y=mean)) +
     legend.position = c(0.15, 0.88)
     
   )
+
 
 dev.off()
 
@@ -515,7 +525,7 @@ p1 <- ggplot(df, aes(x=a5, y=conta5)) +
   geom_point(aes(color=class, shape=class), size=3) + 
   #geom_text(aes(label=pdb), nudge_x=0.055, nudge_y=0.07, size=4) + 
   scale_x_continuous(breaks=c(0, 0.3, 0.6, 0.9), labels=c(0, 30, 60, 90), limits=c(0, 0.9)) +
-  labs(x="% class a5", y="Contacts (a5)") + 
+  labs(x="% class a5", y=paste("Contacts (\u03B1", "5)", sep="")) + 
   scale_color_manual(values=c("orange", "purple", "#777777")) + 
   theme_classic() + 
   theme(

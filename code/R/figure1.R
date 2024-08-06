@@ -124,6 +124,29 @@ ggplot(Tf2.m, aes(x=Tf, y=value)) +
 dev.off()
 
 
+#fit <- lm(Tf2$N_aln ~ Tf2$Tf)
+#Coefficients:
+#  (Intercept)       Tf2$Tf  
+#77.784        1.163  
+
+#fit <- lm(Tf2$N_int ~ Tf2$Tf)
+#Coefficients:
+#  (Intercept)       Tf2$Tf  
+#-175.200        4.772  
+
+
+#cor(Tf2$Tf, Tf2$N_int)
+# 0.4416202
+#cor(Tf2$Tf, Tf2$N_aln)
+# 0.4273461
+
+#cor(Tf2$Tf, Tf2$N_aln, method="spearman")
+# 0.506659
+
+#cor(Tf2$Tf, Tf2$N_int, method="spearman")
+# 0.4550815
+
+
   
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -158,6 +181,7 @@ ggplot(contss.m, aes(x=variable, y=value)) +
   geom_boxplot(aes(fill=type)) + 
   geom_jitter(size=0.5, alpha=0.6, width=0.2, color="#333333") + 
   labs(y="Rel. number of contacts", x="") + 
+  scale_x_discrete( labels=c(paste("\u03B2", "1", sep=""), paste("\u03B1", "1", sep=""), paste("\u03B2", "2", sep=""), paste("\u03B2", "3", sep=""), paste("\u03B1", "2", sep=""), paste("\u03B2", "4", sep=""), paste("\u03B1", "3", sep=""), paste("\u03B2", "5", sep=""), paste("\u03B1", "4", sep=""), paste("\u03B2", "6", sep=""), paste("\u03B1", "5", sep="") )) + 
   scale_fill_manual(values=c("#FF0000", "#b735b7")) +   
   theme_classic() + 
   coord_flip() + 
@@ -173,9 +197,17 @@ dev.off()
 
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL E ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-svg("figures/figure1/E_hex.svg", height=3, width=4)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL E ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# pymol structures
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL F ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+svg("figures/figure1/F_hex.svg", height=3, width=4)
 
 clustdist <- as.data.frame(read.table("data/processed/clusters_avgdists.txt", header=T))
 
@@ -193,7 +225,7 @@ dev.off()
 
 
 
-svg("figures/figure1/E_hist.svg", height=1.2, width=4)
+svg("figures/figure1/F_hist.svg", height=1.2, width=4)
 
 clustdist2 <- clustdist[clustdist$pdb=="YOR089C",]    # only one set of clusters
 
@@ -208,8 +240,3 @@ ggplot(clustdist2, aes(x=N)) +
   )
 
 dev.off()
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PANEL F ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# pymol structures
