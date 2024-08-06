@@ -1,0 +1,23 @@
+<WhamSpec>
+<General>
+<Coordinates><Coordinate name="V" /></Coordinates>
+<DefaultCoordinateFileReader returnsTime="false"><ReturnList name="V" /></DefaultCoordinateFileReader>
+<Binnings><Binning name="V"><Interval>0.1</Interval></Binning></Binnings>
+</General>
+<Trajectories>	<Trajectory T="152.0"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_152.0_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="152.5"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_152.5_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="153.0"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_153.0_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="153.5"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_153.5_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="154.0"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_154.0_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="154.5"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_154.5_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="155.0"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_155.0_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="155.5"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_155.5_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="156.0"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_156.0_fine.data</CoordinateFile></CoordinateFiles></Trajectory>
+</Trajectories>
+<Jobs>
+<HeatCapacity outFile="../data/SI/pywham_YBR164C_fine.out">
+<EnergyFunction>V</EnergyFunction>
+<Temperatures>152.0,152.5,153.0,153.5,154.0,154.5,155.0,155.5,156.0</Temperatures>
+</HeatCapacity>
+</Jobs>
+</WhamSpec>

@@ -1,0 +1,35 @@
+<WhamSpec>
+<General>
+<Coordinates><Coordinate name="V" /></Coordinates>
+<DefaultCoordinateFileReader returnsTime="false"><ReturnList name="V" /></DefaultCoordinateFileReader>
+<Binnings><Binning name="V"><Interval>0.1</Interval></Binning></Binnings>
+</General>
+<Trajectories>	<Trajectory T="150"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_150_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="151"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_151_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="152"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_152_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="153"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_153_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="154"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_154_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="155"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_155_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="156"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_156_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="157"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_157_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="158"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_158_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="159"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_159_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="160"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_160_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="161"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_161_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="162"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_162_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="163"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_163_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="164"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_164_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="165"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_165_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="166"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_166_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="167"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_167_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="168"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_168_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="169"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_169_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="170"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_170_refine.data</CoordinateFile></CoordinateFiles></Trajectory>
+</Trajectories>
+<Jobs>
+<HeatCapacity outFile="../data/SI/pywham_YBR164C_refine.out">
+<EnergyFunction>V</EnergyFunction>
+<Temperatures>150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170</Temperatures>
+</HeatCapacity>
+</Jobs>
+</WhamSpec>

@@ -1,0 +1,35 @@
+<WhamSpec>
+<General>
+<Coordinates><Coordinate name="V" /></Coordinates>
+<DefaultCoordinateFileReader returnsTime="false"><ReturnList name="V" /></DefaultCoordinateFileReader>
+<Binnings><Binning name="V"><Interval>0.1</Interval></Binning></Binnings>
+</General>
+<Trajectories>	<Trajectory T="100"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_100_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="105"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_105_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="110"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_110_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="115"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_115_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="120"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_120_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="125"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_125_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="130"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_130_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="135"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_135_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="140"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_140_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="145"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_145_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="150"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_150_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="155"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_155_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="160"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_160_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="165"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_165_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="170"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_170_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="175"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_175_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="180"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_180_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="185"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_185_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="190"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_190_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="195"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_195_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+<Trajectory T="200"><EnergyFunction>V</EnergyFunction><CoordinateFiles><CoordinateFile>../data/heatCapacityData/YBR164C_200_rough.data</CoordinateFile></CoordinateFiles></Trajectory>
+</Trajectories>
+<Jobs>
+<HeatCapacity outFile="../data/SI/pywham_YBR164C_rough.out">
+<EnergyFunction>V</EnergyFunction>
+<Temperatures>100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200</Temperatures>
+</HeatCapacity>
+</Jobs>
+</WhamSpec>
