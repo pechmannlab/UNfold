@@ -1970,6 +1970,17 @@ def get_unfoldmat(allDF, bondssDF):
                 list_idx.append(jx)
         ufmat_protein = np.mean( ufmat[:,:,list_idx], axis=2)
 
+        # extrating data for SI plots
+        if pdb == "YDL192W":
+            np.savetxt("../data/SI/ufmat_b2_"+pdb+".txt", ufmat[list_ss.index('b2'),:,list_idx], fmt="%.2f")
+            np.savetxt("../data/SI/ufmat_b3_"+pdb+".txt", ufmat[list_ss.index('b3'),:,list_idx], fmt="%.2f")
+            np.savetxt("../data/SI/ufmat_b5_"+pdb+".txt", ufmat[list_ss.index('b5'),:,list_idx], fmt="%.2f")
+            np.savetxt("../data/SI/ufmat_b6_"+pdb+".txt", ufmat[list_ss.index('b6'),:,list_idx], fmt="%.2f")
+            np.savetxt("../data/SI/ufmat_a5_"+pdb+".txt", ufmat[list_ss.index('a5'),:,list_idx], fmt="%.2f")
+        elif pdb == "YHR022C":
+            np.savetxt("../data/SI/ufmat_b2_"+pdb+".txt", ufmat[list_ss.index('b2'),:,list_idx], fmt="%.2f")
+
+
         for ix, i in enumerate(list_ss):   
             ufmat_ss = ufmat_protein[ix,:]
 
@@ -2002,14 +2013,19 @@ def get_unfoldmat(allDF, bondssDF):
         for traj in list_traj:
             current_idx = list_columns.index(traj)
             list_idx.append(current_idx)
-        ufmat_protein = np.mean( ufmat[:,:,list_idx], axis=2)
+        ufmat_unfoldclass = np.mean( ufmat[:,:,list_idx], axis=2)
+        np.savetxt("../data/SI/ufmat_"+ss.replace("/","")+"_beta2.txt", ufmat[list_ss.index('b2'),:,list_idx], fmt="%.2f")
+        np.savetxt("../data/SI/ufmat_"+ss.replace("/","")+"_beta3.txt", ufmat[list_ss.index('b3'),:,list_idx], fmt="%.2f")
+        np.savetxt("../data/SI/ufmat_"+ss.replace("/","")+"_beta5.txt", ufmat[list_ss.index('b5'),:,list_idx], fmt="%.2f")
+        np.savetxt("../data/SI/ufmat_"+ss.replace("/","")+"_beta6.txt", ufmat[list_ss.index('b6'),:,list_idx], fmt="%.2f")
 
-        auc_protein = np.sum( ufmat[:,:,list_idx], axis=1)
-        auc_mean = np.mean(auc_protein, axis=1)
-        auc_sd = np.std(auc_protein, axis=1)
+
+        auc_unfoldclass = np.sum( ufmat[:,:,list_idx], axis=1)
+        auc_mean = np.mean(auc_unfoldclass, axis=1)
+        auc_sd = np.std(auc_unfoldclass, axis=1)
 
         for ix, i in enumerate(list_ss):   
-            ufmat_ss = ufmat_protein[ix,:]
+            ufmat_ss = ufmat_unfoldclass[ix,:]
             current_ss = i
             aucDF.loc[len(aucDF)] = (ss, current_ss, auc_mean[ix], auc_sd[ix])
             for j in range(np.shape(ufmat_ss)[0]):
@@ -2228,6 +2244,259 @@ def unfold_exdata(trajID, mapDF, pdblist):
 
 
 
+#--------------------------------------------------------------------
+def check_refold(traj_file, PDB_file, contact_file, unfold, refold):
+    """
+    Detection of contact formation in refolding trajectories:
+    1. identify folding window, Qf < 0.3 to Qf > 0.7; from unfolding_intermediates.txt as input arg!
+    2. contact formation: last dip below threshold of 2.5, then first dip within 20% of native distance   
+    """
+
+    sbmCAModel = sbmOpenMM.models.getCAModel(PDB_file, contact_file)
+    contacts = [(c[0].index, c[1].index) for c in sbmCAModel.contacts.keys()]
+    current_qf = traj_Qf(traj_file, PDB_file, contact_file)
+
+    reference = md.load(PDB_file)
+    ref_distances = md.compute_distances(reference, contacts) #Note that mdtraj uses nanometers as distance units
+
+    trajectory = md.load(traj_file, top=PDB_file)
+    sim_distances = md.compute_distances(trajectory, contacts)
+
+
+    N = len(sbmCAModel.contacts.keys())
+    window_rm = 20      # not centered, so doesn't have to be uneven
+    resultDF = pd.DataFrame(columns=['A', 'B', 'init', 'bp'])
+
+    med_distances = np.zeros(( np.shape(sim_distances) )) * np.nan
+    std_distances = np.zeros(( np.shape(sim_distances) )) * np.nan  
+    qf_smoothed = np.zeros(( len(current_qf)-window_rm )) 
+    all_init = np.mean( sim_distances[0:window_rm,:], axis=0)
+    for i in range(np.shape(sim_distances)[0] - window_rm):
+        med_distances[i,:] = np.mean( sim_distances[i:(i+window_rm),:], axis=0 ) 
+        std_distances[i,:] = np.std(  sim_distances[i:(i+window_rm),:], axis=0 )
+        qf_smoothed[i] = np.mean( current_qf[i:(i+window_rm)] )
+
+    start_refold = np.argmin(qf_smoothed[unfold:refold]) + unfold
+    end_refold = np.argmax(qf_smoothed[refold:(refold+50)]) + refold
+
+    list_A = []
+    list_B = []
+    bp_rm = np.ones(( np.shape(med_distances)[1] )) * 20000     # non-break, default instead of missing values (remember!)
+    for j in range(np.shape(med_distances)[1]):
+        list_A.append( int(contacts[j][0]) )
+        list_B.append( int(contacts[j][1]) )
+
+        current_spltpts = np.where(med_distances[:,j] > 2.5 )[0]  # last 'broken' bond before refolded   
+        current_bound = np.where(med_distances[:,j] < (all_init[j] * 1.2) )[0]     # first within initial bond length
+
+        current_spltpts = current_spltpts[current_spltpts < end_refold] 
+        current_spltpts = current_spltpts[current_spltpts > start_refold]
+        if len(current_spltpts) > 0:
+            current_refold = current_spltpts[-1] 
+            current_bp = np.copy(current_bound)           # bp's within refold window!
+            current_bp = current_bp[current_bp < end_refold]
+            current_bp = current_bp[current_bp > current_refold ]
+            if len(current_bp) > 0:
+                #bp_rm[j] = current_bp[-1]      # last 'bond'
+                bp_rm[j] = current_bp[0]        # first 'break'
+            
+    resultDF = pd.DataFrame({"A": list_A, "B": list_B, "init": list(all_init), "bp": list(bp_rm)})
+    resultDF.to_csv("tmp.bp", header=True, index=False, sep='\t')
+    
+    return resultDF 
+
+
+
+#--------------------------------------------------------------------
+def refold(trajDF, PDB, pdblist, mapDF):
+    """
+    Wrapper function to generate 'contact formation points' for refolding trajectories: 
+    trajDF: list of trajectories with folding events incl. folding window to analyze
+    Output of all trajectories is combined into output DF
+    """
+    #PDB = "YDL192W"
+
+    cmap, cmat = consensus_contacts(pdblist)
+    resultDF = pd.DataFrame({'alnA': list(cmat[:,0]), 'alnB': list(cmat[:,1])})
+    initDF = pd.DataFrame({'alnA': list(cmat[:,0]), 'alnB': list(cmat[:,1])})
+    cmat[:,0] = aln2relpos(mapDF, cmat[:,0], PDB)
+    cmat[:,1] = aln2relpos(mapDF, cmat[:,1], PDB)
+    np.savetxt("tmp.cmat", cmat, fmt='%i')   # need to write to disk for read-in func
+
+    counter = 0
+    for i in range(len(trajDF)):
+        traj = trajDF.iloc[i]['traj']
+        current_traj = "../data/trajectory/100ns_traj_1Tf_"+traj+".dcd"
+        refold_start = trajDF.iloc[i]['end']
+        refold_end   = trajDF.iloc[i]['refold']
+
+        counter += 1
+        bb = check_refold(current_traj, "../data/CA/"+PDB+"_CA.pdb", "tmp.cmat", refold_start, refold_end)  
+
+        if counter == 1:
+            resultDF['A'] = bb['A']
+            resultDF['B'] = bb['B']
+            resultDF[traj] = bb['bp']       
+        elif counter > 1:
+            resultDF[traj] = bb['bp']
+        else:
+            print("ERROR")
+        
+    if os.path.exists("tmp.cmat"):
+        os.remove("tmp.cmat")
+
+    resultDF.to_csv("../data/breakpoint/rf_"+PDB+".txt", header=True, index=False, sep='\t')
+
+    return resultDF
+
+
+
+#--------------------------------------------------------------------
+def bp_bycluster(bp, clusterlist, bpidx):
+    """
+    Consensus 'contact formation' across contact clusters during folding events
+    bp: dataframe with individual contact formation events and residue ids
+    clusterlist: list of contacts in each contact cluster
+    bpidx: mapping to alignment positions
+    Output: new data frame with contact formation events for each contact cluster
+    """
+    
+    tmp_df = pd.DataFrame(columns=['a', 'b'])
+    list_df = []
+    list_clustID = []
+    resmat = np.zeros(( len(clusterlist), len(bp.columns)-4 ), dtype=int)     # -4 for annotation columns
+
+    for ix, i in enumerate(clusterlist):
+        current_clust = list(np.array(i, dtype=int))
+        current_bp = bpidx.loc[current_clust]
+        current_clustID = list(set(current_bp['clustID']))
+        if len(current_clustID) == 1:
+            current_clustID = int(current_clustID[0])
+            list_clustID.append(current_clustID)
+        else:
+            print("ERROR")
+            break
+        list_idx = []
+        for j in range(len(current_bp)):            # rechecking indices, superflous
+            current_A = current_bp.iloc[j]['A1']
+            current_B = current_bp.iloc[j]['B1']
+            bp2 = bp[bp['alnA']==current_A]
+            bp2 = bp2[bp2['alnB']==current_B]
+            list_idx.append(list(bp2.index)[0])
+
+        current_data = np.array( bp.iloc[list_idx][bp.columns[4:]] )
+
+        current_consensus = np.zeros(( np.shape(current_data)[1] ))
+        for k in range(np.shape(current_data)[1]):
+            current_bond = current_data[:,k]
+            dmat = np.zeros(( len(current_bond), len(current_bond) )) * np.nan
+            for x in range(len(current_bond)):
+                for y in range(x+1, len(current_bond)):
+                    dmat[x,y] =   np.sqrt(np.square(current_bond[x] - current_bond[y]))
+            dndr = bond_clusters(dmat)
+            max_distance = np.max([20, (dndr.iloc[0]['distance']+1) ])
+            clustlist, aa2 = clusters_max_dist(dndr,  tmp_df, distmax=max_distance)
+            best_clust = 0
+            best_len = 0
+            for l in range(len(clustlist)):
+                if len(clustlist[l]) > best_len:
+                    best_clust = l
+                    best_len = len(clustlist[l])
+            current_consensus[k] = np.median(current_bond[clustlist[best_clust]])
+
+        current_consensus = np.array(np.around(np.median(current_data, axis=0), 0), dtype=int)
+        resmat[ix,:] = current_consensus
+ 
+    currentDF = pd.DataFrame(data=resmat, columns=list(bp.columns[4:]), index=list_clustID)
+    list_df.append(currentDF)
+
+    newDF = pd.concat(list_df, axis=1)
+    newDF.insert(loc=0, column='clustID', value=list(currentDF.index) )
+    
+    return newDF
+
+ 
+
+
+
+#--------------------------------------------------------------------
+def get_refoldmat(inpDF, bondssDF):
+    """
+    Compute relative refolding curves
+    inpDF: all refolding contact cluster contact formation events
+    bondssDF: secondary structure assignments 
+    output nxmxk matrix
+        n: secondary structure element
+        m: order
+        k: trajectory
+    """
+
+    ssdict = {}
+    for i in range(len(bondssDF)):
+        current_clustID = bondssDF.iloc[i]['clustID']
+        ss1 = bondssDF.iloc[i]['ss_A1'].replace("*", "").split("/")
+        ss2 = bondssDF.iloc[i]['ss_B1'].replace("*", "").split("/")
+        ss = ss1 + ss2
+        for j in ss:
+            if j in list(ssdict.keys()):
+                ssdict[j].append(current_clustID)
+            else:
+                ssdict[j] = list([current_clustID])
+
+    list_ss = sorted(list(ssdict.keys()))
+    print(list_ss)
+    ufmat = np.zeros(( len(list_ss), len(inpDF), len(list(inpDF.columns)[1:]) ))
+
+    for tx, traj in enumerate( list(inpDF.columns)[1:] ):  
+    
+        current_data = np.array(inpDF[traj])
+        current_sort = np.argsort(current_data)
+
+        # init
+        current_bp = current_sort[0]
+        for jx, j in enumerate(list_ss):
+            if current_bp in ssdict[j]:
+                ufmat[jx, 0, tx] += np.around(1/len(ssdict[j]), 3)
+                #print(j)
+
+        for i in range(1, len(current_sort)):
+            current_bp = current_sort[i]
+            current_uf = ufmat[:,i-1, tx]
+            for jx, j in enumerate(list_ss):
+                if current_bp in ssdict[j]:
+                    current_uf[jx] += np.around(1/len(ssdict[j]), 3)
+            ufmat[:,i, tx] = current_uf
+
+    ufmat = np.around(ufmat, 2)
+#    print(np.shape(ufmat))
+
+    ssunfDF = pd.DataFrame(columns=['pdb', 'ss', 'pos', 'val'])
+    current_pdblist = list(set([ x.split("_")[0] for x in list(inpDF.columns)[1:] ]))
+    for px, pdb in enumerate(current_pdblist):      # for each protein
+        list_idx = []
+        for jx, j in enumerate(list(inpDF.columns[1:])):
+            if pdb in j:
+                list_idx.append(jx)
+        ufmat_protein = np.mean( ufmat[:,:,list_idx], axis=2)
+
+        for ix, i in enumerate(list_ss):   
+            ufmat_ss = ufmat_protein[ix,:]
+            np.savetxt("../data/SI/refoldfmat_"+i+"_"+pdb+".txt", ufmat[ix,:,:], fmt="%.2f")
+
+            for j in range(np.shape(ufmat_ss)[0]):
+                current_val = np.around(ufmat_ss[j], 3)
+                current_pos = j + 1
+                current_ss = i
+                current_prot = pdb
+                #print(current_prot, current_ss, current_pos, current_val)
+                ssunfDF.loc[len(ssunfDF)] = (current_prot, current_ss, current_pos, current_val)
+    ssunfDF.to_csv("../data/processed/ssrefold_byprotein.txt", header=True, index=False, sep='\t')
+
+    return ufmat
+
+
+
+
 
 
 
@@ -2280,22 +2549,17 @@ if __name__ == '__main__':
 
     # get stats on breakpoints and structural distances
     struct_dmat, bpindex = bpstats(pdblist)
-    #bpindex = pd.read_csv("../data/processed/bp_clusters.txt", header=0, index_col=None, sep='\t')
-    #struct_dmat = np.loadtxt("tmp.dmat")
-
     struct_dendro = bond_clusters(struct_dmat)      # cluster bonds on structure
     list_clust, bpindex = clusters_max_dist(struct_dendro, bpindex, distmax=1)  # extracts clusters given distance cutoff
-    #print(bpindex)
 
     allDF = consolidate_bp(pdblist, list_clust, bpindex)
     allDF.to_csv("../data/processed/allDF.txt", header=True, index=False, sep='\t')
-    #allDF = pd.read_csv("../data/processed/allDF.txt", header=0, index_col=False, sep='\t')
 
     bondssDF = ccss(mapDF, pdblist, bpindex) 
-    #bondssDF = pd.read_csv("../data/processed/cluster_ss.txt", header=0, index_col=False, sep='\t')
 
     assignDF = classify_bpinit(allDF, bondssDF)
     assignDF.to_csv("../data/processed/assign_bpinit.txt", header=True, index=False, sep='\t')
+
 
     ## representative contacts per cluster
     representative_contacts(mapDF, pdblist, bpindex)
@@ -2312,3 +2576,8 @@ if __name__ == '__main__':
     imdf = bpintermediates_bycluster(allDF, clustering=False)     # run clustering to generate/update dendrogram files
     imdf.to_csv("../data/processed/unfolding_intermediates.txt", header=True, index=False, sep='\t')
 
+    ## compute folding events and curves
+    rf = refold(imdf, "YDL192W", pdblist, mapDF)
+    rfDF = bp_bycluster(rf, list_clust, bpindex)
+    rfDF.to_csv("../data/processed/refoldDF.txt", header=True, index=False, sep='\t')
+    rfmat = get_refoldmat(rfDF, bondssDF)

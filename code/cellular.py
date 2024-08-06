@@ -136,6 +136,7 @@ if __name__ == '__main__':
         current_qcdDF = QCDpred(current_aa)
         current_start = np.array(current_qcdDF['resi'])[0] - 1
         current_qcd[ current_start:(current_start+int(len(current_qcdDF)) )  ] = np.array(current_qcdDF['tile_degron_prob'])
+        np.savetxt("../data/SI/degron_"+pdb+".txt", current_qcd, fmt='%.3f')
 
         current_mean = np.around(np.nanmean(current_qcd), 3)
         current_mean_N = np.around(np.nanmean( current_qcd[:(current_N+terex)] ), 3)   
